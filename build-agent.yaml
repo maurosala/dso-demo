@@ -11,9 +11,7 @@ spec:
         - cat
       tty: true
       resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
+        limits: {}
       volumeMounts:
         - name: m2
           mountPath: /root/.m2/
@@ -23,9 +21,7 @@ spec:
         - cat
       tty: true
       resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
+        limits: {}
       volumeMounts:
         - mountPath: /var/run
           name: docker-sock
@@ -37,18 +33,14 @@ spec:
         - cat
       tty: true
       resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
+        limits: {}
     - name: licensefinder
       image: licensefinder/license_finder
       command:
         - cat
       tty: true
       resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
+        limits: {}
     - name: kaniko
       image: gcr.io/kaniko-project/executor:v1.6.0-debug
       imagePullPolicy: Always
@@ -60,9 +52,7 @@ spec:
       args:
         - 99d
       resources:
-        limits:
-          memory: "512Mi"
-          cpu: "500m"
+        limits: {}
       volumeMounts:
         - name: jenkins-docker-cfg
           mountPath: /kaniko/.docker
