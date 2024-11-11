@@ -18,12 +18,39 @@ pipeline {
         }
       }
     }
-    stage('Test') {
+    stage('Static Analysis') {
       parallel {
         stage('Unit Tests') {
           steps {
             container('maven') {
               sh 'mvn test'
+            }
+          }
+        }
+        stage('SCA') {
+          steps { 
+            container('maven') { 
+              catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') { 
+                sh 'mvnorg.owasp:dependency-check-maven:check'
+              }
+            }
+          }
+          post {
+            always {
+              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/dependency-check-report.html', fingerprint: true, onlyIfSuccessful: true
+              //dependencyCheckPublisherpattern:'report.xml'
+            }
+          }
+        }
+        stage('OSSLicenseChecker') {
+          steps {
+            container('licensefinder') { 
+              sh 'ls -al'
+              sh '''#!/bin/bash --login 
+                    /bin/bash--login
+                    rvm use default
+                    gem installl icense_finder
+                    license_finder '''
             }
           }
         }
